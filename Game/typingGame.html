@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>打字通游戏</title>
+    <style>
+        * {
+            font-family: Arial sans-serif;
+            margin: 0;
+            padding: 0;
+            -moz-user-select: none;
+            /*火狐*/
+            -webkit-user-select: none;
+            /*webkit浏览器*/
+            -ms-user-select: none;
+            /*IE10*/
+            -khtml-user-select: none;
+            /*早期浏览器*/
+            -o-user-select: none;
+            user-select: none;
+        }
+
+        .box {
+            width: 50%;
+            min-width: 300px;
+            background-color: #ac8c3e;
+            /*text-align: center;*/
+            margin: 40px auto;
+            box-sizing: border-box;
+            padding: 20px;
+            border-radius: 30px;
+            box-shadow: 0 0 30px 9px #939393;
+        }
+
+        .container {
+            margin: 0 auto;
+            text-align: center;
+            padding: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 200px;
+            margin: 20px 0;
+            font-size: 20px;
+            border: none;
+        }
+
+        .operate {
+            width: 20%;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .operate button {
+            width: 90px;
+            font-size: 24px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #timer {
+            font-size: 48px;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="box">
+    <div class="container">
+        你准备好了吗？
+    </div>
+    <textarea name="" id="" cols="30" rows="10" placeholder="开始输入..." style="resize: none"></textarea>
+    <div class="operate">
+        <button>开始</button>
+        <div id="timer">60</div>
+    </div>
+</div>
+<script>
+  const text = "Believe in yourself and all that you are. Know that there is something inside you that is greater than any obstacle. This quote by Christian D. Larson reminds us that we all have the power within us to overcome any obstacle we may face. When we have confidence in ourselves and our abilities, we can achieve great things. So, let's trust ourselves, believe in our dreams, and work hard to make them a reality.";
+  let container = document.querySelector(".container");
+  let input_ = document.querySelector("textarea");
+  let button = document.querySelector(".operate button");
+  let timer = document.querySelector("#timer");
+  input_.value = "";
+
+  button.addEventListener("click", function () {
+    // 设置倒计时
+    timer.textContent = "60";
+
+    // 情况输入框和输出文本区域
+    input_.value = "";
+    container.textContent = "";
+
+    // 开启游戏
+    startGame();
+  });
+
+  // 定时器
+  let countDown;
+
+  // 启动游戏
+  function startGame() {
+    // 开始按钮禁用
+    button.disabled = true;
+
+    // 显示文本
+    container.textContent = text;
+
+    // 启动倒计时
+    countDown = setInterval(() => {
+      const remainingTime = parseInt(timer.textContent) - 1;
+      if (remainingTime === 0) {
+        // 倒计时结束，结束游戏
+        endGame();
+      }
+      timer.textContent = remainingTime + "";
+    }, 1000);
+  }
+
+  // 结束游戏
+  function endGame() {
+    // 停止倒计时
+    clearInterval(countDown);
+
+    // 计算得分
+    const score = calculateScore();
+    container.textContent = `你的得分是${score}分`;
+    // 显示开始按钮和计时器
+    button.style.display = "block";
+    timer.style.display = "block";
+    button.disabled = false;
+  }
+
+  // 计算得分
+  function calculateScore() {
+    const userText = input_.value.trim().split(" ");
+    const correctText = text.trim().split(" ");
+    let score = 0;
+
+    for (let i = 0; i < userText.length; i++) {
+      console.log(userText[i], correctText[i]);
+      if (userText[i] === correctText[i]) {
+        score++;
+      }
+    }
+    return (score / correctText.length * 100).toFixed(2);
+  }
+</script>
+</body>
+</html>

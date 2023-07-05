@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>猜数字游戏</title>
+    <style>
+        * {
+            font-family: Arial, sans-serif;
+            box-sizing: border-box;
+        }
+
+        .container {
+            margin: 50px auto;
+            max-width: 600px;
+            text-align: center;
+            background-color: #d1d1d1;
+            padding: 30px;
+            border-radius: 10px;
+        }
+
+        h1 {
+            font-size: 32px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type='text'] {
+            font-size: 18px;
+            padding: 5px 10px;
+        }
+
+        button {
+            font-size: 18px;
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0062cc;
+        }
+
+        .result {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .message {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .play-again {
+            font-size: 18px;
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            cursor: pointer;
+            margin: 0 auto;
+        }
+
+        .play-again:hover {
+            background-color: #0062cc;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>猜数字游戏</h1>
+    <div class="input-group">
+        <label for="guess">请猜一个0~100的整数：</label>
+        <input id="guess" type="text">
+        <button id="submit">提交</button>
+    </div>
+    <div class="result"></div>
+    <div class="message"></div>
+    <button id="play-again" class="play-again" style="display: none">再玩一次</button>
+</div>
+<script>
+  // 随机生成数
+  let answer = Math.floor(Math.random() * 100) + 1;
+  //获取页面元素
+  let input = document.getElementById("guess");
+  let submit_btn = document.getElementById("submit");
+  let result = document.querySelector(".result");
+  let message = document.querySelector(".message");
+  let play_again_btn = document.getElementById("play-again");
+
+  // 处理提交事件
+  submit_btn.addEventListener("click", function () {
+    // 获取输入的内容
+    let guess = input.value;
+    let guess_num = parseInt(guess);
+    // 验证输入的内容
+    if (isNaN(guess) || guess_num < 1 || guess_num > 100) {
+      result.textContent = "";
+      message.textContent = "请输入1~100以内的整数！";
+      return;
+    }
+
+    // 比较用户输入的数字和答案
+    if (guess_num === answer) {
+      result.textContent = "恭喜你，答对了！";
+      message.textContent = "";
+      play_again_btn.style.display = "block";
+      submit_btn.disabled = true;
+    } else if (guess_num < answer) {
+      message.textContent = "太小了，请继续！";
+      result.textContent = "";
+    } else {
+      message.textContent = "太大了，请继续！";
+      result.textContent = "";
+    }
+  });
+
+  // 处理再玩一次事件
+  play_again_btn.addEventListener("click", function () {
+    // 重新生成随机数
+    answer = Math.floor(Math.random() * 100) + 1;
+
+    // 清空输入框和提示信息
+    input.value = "";
+    message.textContent = "";
+    result.textContent = ""
+
+    // 隐藏再玩一次按钮，启动提交按钮
+    play_again_btn.style.display = 'none';
+    submit_btn.disabled = false;
+  });
+</script>
+</body>
+</html>
